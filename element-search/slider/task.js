@@ -48,14 +48,14 @@ function clickDot(eventObj) {
             dot[i].classList.contains("slider__dot_active") 
             dot[i].classList.remove("slider__dot_active");
             addDotActive();
+            
     }
 
     function addDotActive() {
     let element = eventObj.target;
     let elementClosest = element.closest("*");
         elementClosest.classList.add("slider__dot_active");
-
-    let numberDot;
+        clickNext();
         
     } 
 
