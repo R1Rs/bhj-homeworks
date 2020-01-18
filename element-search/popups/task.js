@@ -25,6 +25,7 @@ function retutnActive() {
 // 3. По нажатию на элемент с классом show-success покажите окно #modal_success
 function returnModalSuccess() {
     let success = document.getElementById("modal_success");
+    modalMain.classList.remove("modal_active");
     success.classList.add("modal_active");
 }
 

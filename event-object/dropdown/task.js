@@ -1,30 +1,29 @@
 
-let dropDownValue = document.getElementsByClassName("dropdown__value");
-
-dropDownValue[0].onclick = listActive;
-
-let dropdownItem = document.querySelectorAll(".dropdown__item"); // чужой код, надо разобраться
-
-for (let i = 0; i < dropdownItem.length; i++) { //чужой код, надо разобраться
-    dropdownItem[i].addEventListener("click", function (event) {
-        let elem = this.closest('.dropdown__list');
-        if (elem.classList[0] == 'dropdown__list') {
-            event.target.onclick = function () {
-                return false;
-            dropdownValue.textContent = event.target.textContent;
-            dropdownList.classList.remove('dropdown__list_active');
-        }
-    }
-});
+let dropdownValue = document.querySelectorAll(".dropdown__value");
+for (i = 0; i < dropdownValue.length; i++) {
+dropdownValue[i].onclick = makeActiveList(i);
 }
 
-function changeValue() { // создаю функцию, меняющую dropDownVAlue и сворачивающую список
-
+let dropdownItem = document.querySelectorAll(".dropdown__item");
+for (i = 0; i < dropdownItem.length; i++) {
+    dropdownItem[i].onclick = changeValue;
 }
 
-function listActive() { // это работает
-    let list = document.querySelector(".dropdown__list");
 
-    list.classList.toggle("dropdown__list_active");
+function makeActiveList(i) {
+    let dropdownList = document.querySelectorAll(".dropdown__list");
+
+    if (dropdownList[i].classList.contains("dropdown__list_active")) {
+        dropdownList[i].classList.remove("dropdown__list_active");
+    }   else {
+        dropdownList[i].classList.add("dropdown__list_active");
+    } return false;
 }
 
+function changeValue(eventObj) {
+    let element = eventObj.target;
+    let dropdownValue = element.closest(".dropdown__value");
+    dropdownValue.innerHTML = element.innerHTML;
+    dropdownList.classList.remove("dropdown__list_active");
+    return false;
+}
