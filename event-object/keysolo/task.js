@@ -17,6 +17,22 @@ class Game {
   }
 
   registerEvents() {
+    document.addEventListener("keydown", compareSymbol); 
+    let i = 0; // инициируем индекс, т.к. перебор циклом не подходит
+    let this2 = this; // переименовываем this, т.к. во вложенной функции this объекта не обнаруживается
+    function compareSymbol(event) {
+    let symbol = document.querySelectorAll(".symbol");
+    if (event.key.toLowerCase() == symbol[i].innerHTML) { //toLowerCase - делаем все символы маленькими для нечувствительности к регистру
+      this2.success();
+      i++;
+      if (i == symbol.length) {  //обнуляем счётчик, если закончились буквы
+        i == 0;
+      }
+    } else {
+      this2.fail();
+    }
+    }
+    
     /*
       TODO:
       Написать обработчик события, который откликается
