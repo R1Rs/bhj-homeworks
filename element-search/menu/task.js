@@ -10,25 +10,27 @@ for (i = 0; i < menuLink.length; i++) {
 }    
 
 function activateMenu(el) {
-    closedMenuActive(); // сначала проверяем есть ли открытое меню и закрываем его
 
     let element = el.target; //берем элемент события
     let ul = element.parentElement; // берем у него ближайший элемент-родитель
     let menuSub = ul.querySelector("ul"); // смотрим вниз от элемент-родителя в поисках первого ul
-    menuSub.classList.add("menu_active"); // если находим - добавляем menu_active
+    closedMenuActive(menuSub); // сначала проверяем есть ли открытое меню и закрываем его, кроме элемента-триггера
+    menuSub.classList.toggle("menu_active"); // если находим - добавляем/удаляем menu_active
     let menuSubLink = menuSub.querySelectorAll("a"); // берём первый найденный элемент ul и ищем ниже все ссылки
     for (i = 0; i < menuSubLink.length; i++) { 
          menuSubLink[i].onclick = function() {
             return false;  // для каждой ссылки запрещаем переход
         }
     }
-    return false; //останавливаем функцию иначе меню открывается и сразу закрывается. 
-}                   //Видимо возвращается в menuLink.onclick для следующего обхода?
+    return false; //для каждой ссылки запрещаем переход, иначе меню открывается и сразу закрывается. 
+}                
     
-function closedMenuActive() {
+function closedMenuActive(menuSub) {
     let CloseMenuActive = document.querySelectorAll(".menu_active"); // находим все открытые меню
     for (i = 0; i < CloseMenuActive.length; i++) {
+        if (i.closest("*") != menuSub) {
         CloseMenuActive[i].closest("*").classList.remove("menu_active"); //для каждого найденного класса - находим его ближайшего родителя,                                                       
-    }                                                                       // включая элемент-родитель самого класса и удаляем у него класс menu_active
+    }                                                                 // включая элемент-родитель самого класса и удаляем у него класс menu_active
+}                                                         
 }
 
