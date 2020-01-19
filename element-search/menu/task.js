@@ -26,10 +26,10 @@ function activateMenu(el) {
 }                
     
 function closedMenuActive(menuSub) {
-    let CloseMenuActive = document.querySelectorAll(".menu_active"); // находим все открытые меню
-    for (i = 0; i < CloseMenuActive.length; i++) {
-        if (i.closest("*") != menuSub) {
-        CloseMenuActive[i].closest("*").classList.remove("menu_active"); //для каждого найденного класса - находим его ближайшего родителя,                                                       
+    let closeMenuActive = document.querySelectorAll(".menu_active"); // находим все открытые меню
+    for (i = 0; i < closeMenuActive.length; i++) {
+        if (closeMenuActive[i].closest("*") != menuSub) {
+        closeMenuActive[i].closest("*").classList.remove("menu_active"); //для каждого найденного класса - находим его ближайшего родителя,                                                       
     }                                                                 // включая элемент-родитель самого класса и удаляем у него класс menu_active
 }                                                         
 }
