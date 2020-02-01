@@ -1,3 +1,5 @@
+// Чат с клиентом. Повышенная сложность. 
+
 // открытие окна чата
 let chatWidget = document.querySelector(".chat-widget");
 chatWidget.addEventListener("click", () => chatWidget.classList.add("chat-widget_active"));
