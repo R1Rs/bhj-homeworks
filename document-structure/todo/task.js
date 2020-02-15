@@ -8,7 +8,7 @@ taskInput.addEventListener("keydown", addTask); // тоже самое собы�
 
 // добавление задачи
 function addTask(e) {
-    if ((e.keyCode === 13 || !e.keyCode) & (taskInput.value.trim() != "")) {
+    if ((e.keyCode === 13 || !e.keyCode) && (taskInput.value.trim() != "")) {
     tasksList.innerHTML += `<div class="task">
                                 <div class="task__title">
                                     ${taskInput.value}
@@ -25,6 +25,7 @@ function addTask(e) {
     }  
 } 
 
+
 // удаление задачи
 function remove(el) {
     let element = el.target;
@@ -36,6 +37,10 @@ function remove(el) {
 // обращение к локальному хранилищу для отображение задач после перезапуска браузера
 function getLocalStorage() {
     tasksList.innerHTML = localStorage.getItem("task"); 
-}
+
+    let taskRemove = document.querySelectorAll(".task__remove"); 
+    let arrayTaskRemove = Array.from(taskRemove);
+    arrayTaskRemove.forEach((el) => el.addEventListener("click", remove)); // добавляем слушатели удаления на созданные из хранилища задачи
+ }
 
 window.onload = getLocalStorage(); 
