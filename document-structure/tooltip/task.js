@@ -8,6 +8,10 @@ arrayHasTooltip.forEach((element) => element.addEventListener("mouseout", change
 function addTooltip(el) {
    el.preventDefault();
    let title = el.target.title;
+   let element = el.target;
+   if (element.lastElementChild) {              // при повторном клике удаляем добавленную ранее подсказку
+      element.removeChild(element.childNodes[1])
+   };
    let targetPositionLeft = el.target.getBoundingClientRect().left; //берём расстояние слева у элемента, по которому кликнули
    el.target.insertAdjacentHTML("beforeEnd", `<div class ="tooltip tooltip_active" style="left: ${targetPositionLeft}px">${title}</div>`);
 }
