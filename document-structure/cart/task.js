@@ -1,3 +1,5 @@
+// Задание с повышенной сложностью - перемещение изображения при добавлении в корзину
+
 let quantityControlDec = document.querySelectorAll(".product__quantity-control_dec");
 let quantityControlInc = document.querySelectorAll(".product__quantity-control_inc");
 let product = document.querySelectorAll(".product__add");
@@ -40,15 +42,9 @@ function productAdd(el) {
     let product = element.closest(".product"); // находим у элемента родителя с классом product
     let productId = product.dataset.id; // берём у родителя id
     let imageProduct = product.querySelector(".product__image"); // находим у элемента дочку с изображением
-    let imageProductPlaceX = imageProduct.getBoundingClientRect().left; // вычисляем положение элемента
-    let imageProductPlaceY = imageProduct.getBoundingClientRect().top;
     let imageSrc = imageProduct.src; // и присваиваем её изображение переменной
     let imageProductCopy = imageProduct.cloneNode(); // делаем копию элемента с изображением
-    imageProductCopy.setAttribute("position", "absolute"); // добавляем в копию абсолютное позиционирование
-    let imageProductCopyPlaceX = imageProductCopy.getBoundingClientRect().left; // вычисляем положение копии элемента
-    let imageProductCopyPlaceY = imageProductCopy.getBoundingClientRect().top;
-    imageProductCopyPlaceX = imageProductPlaceX; // делаем положение идентичным оригинальному
-    imageProductCopyPlaceY = imageProductPlaceY;
+
    
     let valueProduct = product.querySelector(".product__quantity-value").textContent.trim(); // находим у элемента дочку с текстом и присваиваем
 
@@ -57,37 +53,56 @@ function productAdd(el) {
     }
     
     // изменение html в зависимости от наличия или отсутсвтия товара в корзине
-    if ((arrayProductInCart.length == 0) || (arrayProductInCart.find(finder) == undefined)) {
+    if ((arrayProductInCart.find(finder) == undefined)) { // если добавляемые товар отсутствует в корзине
         cartProducts.innerHTML += `<div class="cart__product" data-id="${productId}">
                                         <img class="cart__product-image" src="${imageSrc}">
                                         <div class="cart__product-count">${valueProduct}</div>
                                     </div>`;
-        let imageInCart = cartProducts.querySelector(".cart__product-image"); // берем элемент с изображением продукта в корзине
-        let imageInCartPlaceX = imageInCart.getBoundingClientRect().left; // вычисляем положение элемента в корзине
-        let imageInCartPlaceY = imageInCart.getBoundingClientRect().top;
-
-        let spaceX = imageInCartPlaceX - imageProductCopyPlaceX;
-        let spaceY = imageInCartPlaceY - imageProductCopyPlaceY;
-        
-        imageProductCopyPlaceX = spaceX / 2; // проверка перемещения
-
- 
+        productInCart = cartProducts.querySelectorAll(".cart__product"); // обновляем содержимое, т.к. querySelector сам не обновляется при изменении DOM
+        arrayProductInCart = Array.from(productInCart); // это нужно для поиска координат нового добавленного в корзину продукта
     } else { arrayProductInCart.forEach((el) => {
         if (el.dataset.id == productId) {
             let valueProductInCart = el.querySelector(".cart__product-count").textContent.trim();
-            valueProductInCart = +valueProductInCart + +valueProduct; //переводим строку в число и складываем
+            valueProductInCart = +valueProductInCart + +valueProduct; //переводим строки в числа и складываем
             el.querySelector(".cart__product-count").textContent = valueProductInCart;
         }
     })
 }
+    // вычисляем координаты изображения товара в корзине
+    let imageInCart = arrayProductInCart.find(finder)
+    let imageInCartPlaceX = imageInCart.getBoundingClientRect().left; // вычисляем координаты элемента в корзине
+    let imageInCartPlaceY = imageInCart.getBoundingClientRect().top;
 
-  
+    // выносим вычисления координат добавляемого продукта в эту часть, т.к. при изменении html в корзине - меняется DOM и, следовательно, координаты продукта
+    let imageProductPlaceX = imageProduct.getBoundingClientRect().left; // вычисляем коорданаты добавляемого продукта
+    let imageProductPlaceY = imageProduct.getBoundingClientRect().top;
 
+    product.insertAdjacentElement("afterBegin", imageProductCopy); // добавляем созданный клон изображения в DOM после того как DOM стабилизировался после изменений HTML
+    let left = imageProductPlaceX; // берем расстояние x y оригинального продукта
+    let top = imageProductPlaceY;
+    
+    //размещаем копию продукта идентично положению оригинального продукта
+    imageProductCopy.style.position = "absolute"; // добавляем в копию абсолютное позиционирование
+    imageProductCopy.style.left = left + "px"; // добавляем в копию х у расстояние оригинального продукта
+    imageProductCopy.style.top = top + "px";
 
+    let itteration = 0; // задаём счётчик запусков setInterval
+    function effectMoving() {
+        let imageProductCopyX = imageProductCopy.getBoundingClientRect().left;
+        let imageProductCopyY = imageProductCopy.getBoundingClientRect().top;
+        left = Math.floor(imageProductCopyX + (imageInCartPlaceX - imageProductCopyX) / 5);
+        top = Math.floor(imageProductCopyY - (imageProductCopyY - imageInCartPlaceY) / 5);
+        imageProductCopy.style.left = left + "px"; // добавляем в копию х у расстояние оригинального продукта
+        imageProductCopy.style.top = top + "px";
+        itteration ++
+          if (itteration == 10) { // если 10 раз запустили setInterval, то удаляем его и копию изображения
+            clearInterval(id);
+            imageProductCopy.remove();
+        }
+    }
 
-}  
-
-
+    let id = setInterval(effectMoving, 25);
+}
   
          
 
