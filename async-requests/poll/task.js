@@ -7,7 +7,7 @@ let question = document.getElementById("poll__title");
 let answersButton = document.getElementById("poll__answers");
 
 get.onreadystatechange = () => {
-    if (get.readyState === get.DONE) {
+    if (get.readyState === get.DONE && get.status === 200) {
         question.innerText = get.response.data.title;
         let answers = get.response.data.answers;
         answers.forEach(element => {
