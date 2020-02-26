@@ -5,5 +5,7 @@
  })
 
  window.onload = () => {
+     if (localStorage.text) {
      text.value = JSON.parse(localStorage.text);
+     }
  }
